@@ -1,0 +1,22 @@
+crypto isakmp policy 10
+ encr aes 192
+ hash sha384
+ authentication pre-share
+ group 5
+
+crypto isakmp key cisco123 address 10.182.157.2 
+
+crypto ipsec transform-set TSET esp-aes 192 esp-sha-hmac 
+ mode tunnel
+
+crypto map CMAP 10 ipsec-isakmp 
+ set peer 10.182.157.2
+ set transform-set TSET 
+ match address node1_to_node2
+
+ip access-list extended node1_to_node2
+ permit ip 172.16.12.0 0.0.0.255 192.168.12.0 0.0.0.255
+
+int fa1/1
+crypto map CMAP
+
