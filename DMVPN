@@ -1,0 +1,67 @@
+HUB
+
+int tunnel 0 
+ip address 155.1.0.5 255.255.255.0
+no ip redirects
+ip mtu 1400
+ip nhrp authention NHRPPASS
+ip nhrp map multicast dynamic
+ip nhrp network-id 1
+ip tcp adjust-mss 1360
+delay 1000
+tunel source fa1/0
+tunnel mode gre nultipoint
+tunnel key 150
+tunel protection ipsec profile DMVPN_PROFILE
+no ip spilt-horizon eigrp 1
+no ip next-hop self eigrp 1
+
+
+crypto isakmp policy 100
+ encr aes 192
+ hash sha512
+ authentication pre-share
+ group 5
+
+crypto isakmp key DMVPN_KEY address 0.0.0.0 
+
+crypto ipsec transform-set DMVPN_TSET esp-3des esp-md5
+mode transport
+
+crypto ipsec profile DMVPN_PROFILE
+set transform-set DMVPN_TSET
+
+
+SPOKE
+
+int tunnel 0 
+ip address 155.1.0.1 255.255.255.0
+no ip redirects
+ip mtu 1400
+ip nhrp authention NHRPPASS
+ip nhrp map 155.1.0.5 169.254.100.5
+ip nhrp map multicast 169.254.100.5
+ip nhrp network-id 1
+ip nhrp holdtime 300
+ip nhrp nhs 155.1.0.5
+ip tcp adjust-mss 1360
+tunel source fa1/0
+tunnel mode gre nultipoint
+tunnel key 150
+tunnel protection ipsec profile DMVPN_PROFILE
+
+
+crypto isakmp policy 100
+ encr aes 192
+ hash sha512
+ authentication pre-share
+ group 5
+
+crypto isakmp key DMVPN_KEY address 0.0.0.0 
+
+crypto ipsec transform-set DMVPN_TSET esp-3des esp-md5
+mode transport
+
+crypto ipsec profile DMVPN_PROFILE
+set transform-set DMVPN_TSET
+
