@@ -29,3 +29,6 @@ crypto map GRE_AND_IPSEC 10 ipsec-isakmp
 
 int fa1/1
 crypto map GRE_AND_IPSEC 
+
+
+#tunnel mode transport - only takes effect when the proxy acl is sourced from the router where the cypto map is applied.
