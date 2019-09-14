@@ -1,0 +1,30 @@
+crypto isakmp policy 10
+ encr aes 192
+ hash sha384
+ authentication pre-share
+ group 5
+
+
+crypto isakmp key cisco123 address 10.182.157.2 (lo0)
+
+ip access-list ex GRE
+permit gre any any
+
+
+crypto ipsec transform-set TSET esp-aes 192 esp-sha-hmac
+mode tunnel
+
+crypto map GRE_AND_IPSEC local-address Loopback0
+crypto map GRE_AND_IPSEC 10 ipsec-isakmp
+ set peer 10.182.157.2
+ set transform-set TSET 
+ match address GRE
+
+ int tun 0
+ tunnel source lo0
+ tunnel destination 150.1.7.7
+ ip add 65.0.0.5 255.255.255.0
+ ip ospf 10 area 0
+
+int fa1/1
+crypto map GRE_AND_IPSEC 
