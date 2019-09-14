@@ -23,7 +23,7 @@ crypto map GRE_AND_IPSEC 10 ipsec-isakmp
  int tun 0
  tunnel source lo0
  ip mtu 1400
- ip tcp adjust-mss 100
+ ip tcp adjust-mss 1360
  tunnel destination 150.1.7.7
  ip add 65.0.0.5 255.255.255.0
  ip ospf 10 area 0
